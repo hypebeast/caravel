@@ -16,8 +16,27 @@ CARAVEL_WEBSERVER_PORT = int(os.getenv("CARAVEL_WEBSERVER_PORT", 8088))
 SECRET_KEY = os.getenv("SECRET_KEY", "\2\1thisismyscretkey\1\2\e\y\y\h")
 
 # The SQLAlchemy connection string.
-SQLALCHEMY_DATABASE_URI = os.getenv(
-    "SQLALCHEMY_DATABASE_URI", "sqlite:////home/caravel/db/caravel.db")
+DB_HOST = None
+DB_PORT = None
+DB_ADAPTER = None
+DB_USER = os.getenv("DB_USER", None)
+DB_PASS = os.getenv("DB_PASS", None)
+DB_NAME = os.getenv("DB_NAME", None)
+
+if os.getenv("MYSQL_PORT_3306_TCP_ADDR", None):
+    DB_ADAPTER = "mysql"
+    DB_HOST = "mysql"
+    DB_PORT = os.getenv("MYSQL_PORT_3306_TCP_PORT", None)
+elif os.getenv("POSTGRESQL_PORT_5432_TCP_ADDR", None):
+    DB_ADAPTER = "postgresql"
+    DB_HOST = "postgresql"
+    DB_PORT = os.getenv("POSTGRESQL_PORT_5432_TCP_PORT", None)
+
+if DB_HOST and DB_PORT and DB_USER and DB_PASS and DB_NAME:
+    SQLALCHEMY_DATABASE_URI = "{}://{}:{}@{}/{}".format(DB_ADAPTER, DB_USER, DB_PASS, DB_HOST, DB_NAME)
+else:
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "SQLALCHEMY_DATABASE_URI", "sqlite:////home/caravel/db/caravel.db")
 
 # Flask-WTF flag for CSRF
 CSRF_ENABLED = os.getenv("CSRF_ENABLED", "1") in ("True", "true", "1")
