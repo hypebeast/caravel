@@ -4,7 +4,7 @@ import os
 # Caravel specific config
 #---------------------------------------------------------
 ROW_LIMIT = int(os.getenv("ROW_LIMIT", 5000))
-WEBSERVER_THREADS = int(os.getenv("WEBSERVER_THREADS", 8))
+CARAVEL_WORKERS = int(os.getenv("CARAVEL_WORKERS", 8))
 
 CARAVEL_WEBSERVER_PORT = int(os.getenv("CARAVEL_WEBSERVER_PORT", 8088))
 #---------------------------------------------------------
@@ -16,9 +16,9 @@ CARAVEL_WEBSERVER_PORT = int(os.getenv("CARAVEL_WEBSERVER_PORT", 8088))
 SECRET_KEY = os.getenv("SECRET_KEY", "\2\1thisismyscretkey\1\2\e\y\y\h")
 
 # The SQLAlchemy connection string.
-DB_HOST = None
-DB_PORT = None
-DB_ADAPTER = None
+DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
+DB_PORT = os.getenv("DB_PORT", "3306")
+DB_ADAPTER = os.getenv("DB_ADAPTER", "mysql")
 DB_USER = os.getenv("DB_USER", None)
 DB_PASS = os.getenv("DB_PASS", None)
 DB_NAME = os.getenv("DB_NAME", None)
